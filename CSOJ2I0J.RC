@@ -1,0 +1,6 @@
+#include <os2.h>
+#include "csoj2i0j.h"
+
+BITMAP  ID_CSOJ2I0J_BMP_DOWN     "BTOJ2I0X.BMP"
+BITMAP  ID_CSOJ2I0J_BMP_RIGHT    "BTOJ2I0W.BMP"
+

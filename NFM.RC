@@ -1,0 +1,239 @@
+#include <os2.h>
+#include "nfm.h"
+#include "csoj2i0a.h"
+#include "caoj2i03.h"
+
+ICON ID_FRAME "DESKTOP.ICO"
+
+BITMAP ID_BMP_PADRE            "PADRE.BMP"
+
+BITMAP ID_BMP_GRAFICO          "GRAFICO.BMP"
+BITMAP ID_BMP_PREVIEW          "PREVIEW.BMP"
+BITMAP ID_BMP_PTHUMB           "PTHUMB.BMP"
+BITMAP ID_BMP_PNORM            "PNORM.BMP"
+BITMAP ID_BMP_PSTRETCH         "PSTRETCH.BMP"
+
+BITMAP ID_BMP_IMPOSTAZ         "IMPOSTAZ.BMP"
+BITMAP ID_BMP_AGGIORNA         "AGGIORNA.BMP"
+
+BITMAP ID_BMP_CANCELL          "CANCELL.BMP"
+BITMAP ID_BMP_CREA             "CREA.BMP"
+
+BITMAP ID_BMP_ICON             "VIEWICON.BMP"
+BITMAP ID_BMP_LIST             "VIEWLIST.BMP"
+BITMAP ID_BMP_CONTENT          "VIEWCONT.BMP"
+BITMAP ID_BMP_DETAIL           "VIEWDETA.BMP"
+
+ICON ID_ICON_DESKTOP "DESKTOP.ICO"
+ICON ID_ICON_DISKA   "DISKA.ICO"
+ICON ID_ICON_CDROM   "CDROM.ICO"
+ICON ID_ICON_DISK    "DISK.ICO"
+ICON ID_ICON_LANDISK "LANDISK.ICO"
+ICON ID_ICON_FOLDERO "FOLDERO.ICO"
+
+MENU ID_FRAME PRELOAD FIXED
+BEGIN
+  SUBMENU "~File",                          -1
+  BEGIN
+    SUBMENU "Nuovo",                        -1
+    BEGIN
+      MENUITEM "Cartella",                  ID_MN_NEWFOLD,      MIS_TEXT
+      MENUITEM "Collegamento",              ID_MN_NEWCOLL,      MIS_TEXT
+    END
+    MENUITEM SEPARATOR
+    MENUITEM "Elimina",                     ID_MN_CANCELLARE,   MIS_TEXT
+    MENUITEM "Rinomina",                    ID_MN_RINOMINARE,   MIS_TEXT
+    MENUITEM "Impostazioni",                ID_MN_IMPOSTAZIONI, MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Chiudi",                      ID_EXIT,            MIS_TEXT
+  END
+
+  SUBMENU "Modifica",                       -1
+  BEGIN
+    MENUITEM "Annulla",                     ID_MN_ANNULLA,      MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Taglia",                      ID_MN_TAGLIA,       MIS_TEXT
+    MENUITEM "Copia",                       ID_MN_COPIA,        MIS_TEXT
+    MENUITEM "Incolla",                     ID_MN_INCOLLA,      MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Seleziona tutto",             ID_SEL_ALL,         MIS_TEXT
+    MENUITEM "Inverti selezione",           ID_SEL_INVERT,      MIS_TEXT
+  END
+
+  SUBMENU "~Visualizza",                    -1
+  BEGIN
+    MENUITEM "Barra degli strumenti",       ID_SW_BARRA_MENU,   MIS_TEXT
+    MENUITEM "Barra di stato",              ID_SW_BARRA_STATO,  MIS_TEXT
+    MENUITEM "Anteprima",                   ID_PREVIEW,         MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Icone grandi",                ID_ICON,            MIS_TEXT
+    MENUITEM "Icone piccole",               ID_LIST,            MIS_TEXT
+    MENUITEM "Elenco",                      ID_CONTENT,         MIS_TEXT
+    MENUITEM "Dettagli",                    ID_DETAIL,          MIS_TEXT
+    MENUITEM SEPARATOR
+    SUBMENU  "Disponi icone",               -1
+    BEGIN
+      MENUITEM "Per nome",                  -1,                 MIS_TEXT
+      MENUITEM "Per tipo",                  -1,                 MIS_TEXT
+      MENUITEM "Per dimensione",            -1,                 MIS_TEXT
+      MENUITEM "Per data",                  -1,                 MIS_TEXT
+    END
+    MENUITEM "Allinea icone",               -1,                 MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Aggiorna",                    -1,                 MIS_TEXT
+    MENUITEM "Opzioni",                     ID_OPTIONS,         MIS_TEXT
+  END
+
+  SUBMENU "~Strumenti",                     -1
+  BEGIN
+    SUBMENU "Trova",                        -1
+    BEGIN
+       MENUITEM "File o cartelle...",       -1,                 MIS_TEXT
+       MENUITEM "Computer...",              -1,                 MIS_TEXT
+    END
+    MENUITEM "Connetti unit… di rete...",   -1,                 MIS_TEXT
+    MENUITEM "Disconnetti unit… di rete...",-1,                 MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Vai a...",                    ID_VAIA,            MIS_TEXT
+  END
+
+  SUBMENU "Aiuto",                           -1
+  BEGIN
+    MENUITEM "Guida in linea",              -1,                 MIS_TEXT
+    MENUITEM "Informazioni su...",          -1,                 MIS_TEXT
+  END
+END
+
+ACCELTABLE ID_FRAME LOADONCALL
+BEGIN
+   VK_F3,   ID_EXIT,          VIRTUALKEY
+END
+
+DLGTEMPLATE ID_BARRA_MENU PRELOAD FIXED
+BEGIN
+    DIALOG  "", ID_BARRA_MENU, 7, 117, 493, 24, NOT FS_DLGBORDER |
+            WS_VISIBLE
+            PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL         "", ID_COMBO_DRIVE, 0, -86, 87, 108, "CSOJ2I0L",
+                        CBS_DROPDOWNLIST | WS_GROUP | WS_VISIBLE | LS_OWNERDRAW
+                        PRESPARAMS PP_FONTNAMESIZE, "5.System VIO"
+        CONTROL         _MAKESTR(#ID_BMP_PADRE),    ID_PARENT,          92, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+
+        CONTROL         _MAKESTR(#ID_BMP_GRAFICO),  ID_MN_VISGRAFICA,  112, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+        CONTROL         _MAKESTR(#ID_BMP_PREVIEW),  ID_PREVIEW,        128, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+        CONTROL         _MAKESTR(#ID_BMP_PNORM),    ID_TIPO_PREVIEW,   144, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+
+        CONTROL         _MAKESTR(#ID_BMP_IMPOSTAZ), ID_OPTIONS,        164, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+        CONTROL         _MAKESTR(#ID_BMP_AGGIORNA), ID_RELOAD,         180, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+
+        CONTROL         _MAKESTR(#ID_BMP_CANCELL),  ID_MN_CANCELLARE,  200, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+        CONTROL         _MAKESTR(#ID_BMP_CREA),     ID_MN_IMPOSTAZIONI,216, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+
+        CONTROL         _MAKESTR(#ID_BMP_ICON),     ID_ICON,           236, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+        CONTROL         _MAKESTR(#ID_BMP_LIST),     ID_LIST,           252, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+        CONTROL         _MAKESTR(#ID_BMP_CONTENT),  ID_CONTENT,        268, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+        CONTROL         _MAKESTR(#ID_BMP_DETAIL),   ID_DETAIL,         284, 11, 15, 11, WC_BUTTON, WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | NOT WS_TABSTOP
+
+        CONTROL         "", ID_TREE_TOP,           0,  0, 125, 9, "CAOJ2I03", WS_GROUP |
+                        WS_VISIBLE | WS_INCASSATO
+        CONTROL         "", ID_FILES_TOP,         126, 0, 377, 9, "CAOJ2I03", WS_GROUP |
+                        WS_VISIBLE | WS_INCASSATO
+    END
+END
+
+DLGTEMPLATE ID_BARRA_STATO PRELOAD FIXED
+BEGIN
+    DIALOG  "", ID_BARRA_STATO, 7, 117, 513, 9, NOT FS_DLGBORDER |
+            WS_VISIBLE
+            PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        CONTROL         "", ID_TREE_BOTTOM, 0, 0, 125, 9, "CAOJ2I03", WS_GROUP |
+                        WS_VISIBLE | WS_INCASSATO
+        CONTROL         "", ID_FILES_BOTTOM, 127, 0, 377, 9, "CAOJ2I03", WS_GROUP |
+                        WS_VISIBLE | WS_INCASSATO
+    END
+END
+
+MENU ID_MN_CONTFILES PRELOAD FIXED
+BEGIN
+  MENUITEM "Aprire",                        ID_MN_APRI,            MIS_TEXT
+  MENUITEM "Impostazioni",                  ID_MN_IMPOSTAZIONI,    MIS_TEXT
+  MENUITEM "Modificare",                    ID_MN_MODIFICARE,      MIS_TEXT
+  MENUITEM SEPARATOR
+  MENUITEM "Spostare",                      ID_MN_SPOSTARE,        MIS_TEXT
+  MENUITEM "Copiare",                       ID_MN_COPIARE,         MIS_TEXT
+  MENUITEM "Creare copia collegata",        ID_MN_COPIACOLLEGATA,  MIS_TEXT
+  MENUITEM SEPARATOR
+  MENUITEM "Cancellare",                    ID_MN_CANCELLARE,      MIS_TEXT
+  MENUITEM SEPARATOR
+  MENUITEM "Rinominare",                    ID_MN_RINOMINARE,      MIS_TEXT
+END
+
+MENU ID_MN_CONTTREES PRELOAD FIXED
+BEGIN
+  MENUITEM "Aprire",                        ID_MN_APRI,            MIS_TEXT
+  MENUITEM "Impostazioni",                  ID_MN_IMPOSTAZIONI,    MIS_TEXT
+  SUBMENU  "Aprire come",                   -1
+  BEGIN
+    MENUITEM "Visualizzazione ad icone",    ID_MN_APRIICONE,       MIS_TEXT
+    MENUITEM "Visualizzazione ad albero",   ID_MN_APRITREE,        MIS_TEXT
+    MENUITEM "Visualizzazione dettagli",    ID_MN_APRIDETT,        MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Visualizzazione grafica",     ID_MN_VISGRAFICA,      MIS_TEXT
+  END
+  MENUITEM SEPARATOR
+  MENUITEM "Spostare",                      ID_MN_SPOSTARE,        MIS_TEXT
+  MENUITEM "Copiare",                       ID_MN_COPIARE,         MIS_TEXT
+  MENUITEM "Creare copia collegata",        ID_MN_COPIACOLLEGATA,  MIS_TEXT
+  MENUITEM SEPARATOR
+  MENUITEM "Cancellare",                    ID_MN_CANCELLARE,      MIS_TEXT
+  MENUITEM SEPARATOR
+  MENUITEM "Rinominare",                    ID_MN_RINOMINARE,      MIS_TEXT
+END
+
+MENU ID_MN_CONTDRIVES PRELOAD FIXED
+BEGIN
+  MENUITEM "Aprire",                        ID_MN_APRI,            MIS_TEXT
+  MENUITEM "Impostazioni",                  ID_MN_IMPOSTAZIONI,    MIS_TEXT
+  SUBMENU  "Aprire come",                   -1
+  BEGIN
+    MENUITEM "Visualizzazione ad icone",    ID_MN_APRIICONE,       MIS_TEXT
+    MENUITEM "Visualizzazione ad albero",   ID_MN_APRITREE,        MIS_TEXT
+    MENUITEM "Visualizzazione dettagli",    ID_MN_APRIDETT,        MIS_TEXT
+    MENUITEM SEPARATOR
+    MENUITEM "Visualizzazione grafica",     ID_MN_VISGRAFICA,      MIS_TEXT
+  END
+  MENUITEM SEPARATOR
+  MENUITEM "Spostare",                      ID_MN_SPOSTARE,        MIS_TEXT
+  MENUITEM "Copiare",                       ID_MN_COPIARE,         MIS_TEXT
+  MENUITEM "Creare copia collegata",        ID_MN_COPIACOLLEGATA,  MIS_TEXT
+  MENUITEM SEPARATOR
+  MENUITEM "Formattare",                    ID_MN_FORMATTARE,      MIS_TEXT
+  MENUITEM "Partizionare",                  ID_MN_PARTIZIONARE,    MIS_TEXT
+  MENUITEM SEPARATOR
+  MENUITEM "Controllare",                   ID_MN_CONTROLLARE,     MIS_TEXT
+END
+
+DLGTEMPLATE ID_VAIA_DIAG LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Vai a ...", ID_VAIA_DIAG, 47, 79, 283, 37, WS_VISIBLE, FCF_SYSMENU |
+            FCF_TITLEBAR
+            PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        ENTRYFIELD      "", ID_VAIA_EF, 6, 23, 269, 8, ES_MARGIN
+        DEFPUSHBUTTON   "Ok", ID_VAIA_OK, 197, 3, 40, 14
+        PUSHBUTTON      "Annulla", ID_VAIA_CANCEL, 237, 3, 40, 14
+    END
+END
+
+DLGTEMPLATE ID_OPER LOADONCALL MOVEABLE DISCARDABLE
+BEGIN
+    DIALOG  "Operazione in corso", ID_OPER, 49, 92, 249, 41, FS_SCREENALIGN |
+            WS_VISIBLE | WS_SYNCPAINT, FCF_TITLEBAR
+            PRESPARAMS PP_FONTNAMESIZE, "8.Helv"
+    BEGIN
+        LTEXT           "", ID_OPER_MSG, 3, 4, 241, 12, DT_VCENTER
+    END
+END
+

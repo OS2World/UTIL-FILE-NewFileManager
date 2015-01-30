@@ -1,0 +1,8 @@
+/* Classe Embossed */
+BOOL EXPENTRY CAOJ2I03_REGISTRA( HAB );
+
+#define WS_INCASSATO       0x00000001L
+#define WS_RILIEVO         0x00000002L
+#define WS_PROFPER2        0x00000004L
+#define WS_PROFPER4        0x00000008L
+
