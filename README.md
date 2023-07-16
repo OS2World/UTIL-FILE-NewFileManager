@@ -1,7 +1,7 @@
 # UTIL-FILE-NewFileManager
 Prototype for OS/2 FileManager.
 
-![NewFileManager ScreenShot](/Wiki/NFM_001.png)
+![NewFileManager ScreenShot](/wiki/NFM_001.png)
 
 LICENSE
 ===============
