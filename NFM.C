@@ -255,12 +255,12 @@ int main( int argc, char *argv[] )
   hptrSysFile  = WinQuerySysPointer(HWND_DESKTOP,SPTR_FILE,FALSE);
 
   /* Creazione frame window *************************************************/
-  WinRegisterClass( hab, "FrameWindow", FrameProc, CS_SIZEREDRAW, 0 );
+  WinRegisterClass( hab, (PCSZ) "FrameWindow", FrameProc, CS_SIZEREDRAW, 0 );
   hwndFrame = WinCreateStdWindow( HWND_DESKTOP,
                                   0L,
                                   &flCreate,
-                                  "FrameWindow",
-                                  "Nuovo File Manager",
+                                  (PCSZ) "FrameWindow",
+                                  (PCSZ) "New File Manager",
                                   0L,
                                   (HMODULE)NULL,
                                   ID_FRAME,
@@ -318,8 +318,8 @@ int main( int argc, char *argv[] )
   GestBarraStato( TRUE );
 
   /* Creazione client window (MIA) ******************************************/
-  WinRegisterClass( hab, "ClientWindow", ClientProc, CS_SIZEREDRAW, 0 );
-  hwndMiaClient = WinCreateWindow( hwndClient,"ClientWindow", "",
+  WinRegisterClass( hab, (PCSZ) "ClientWindow", ClientProc, CS_SIZEREDRAW, 0 );
+  hwndMiaClient = WinCreateWindow( hwndClient, (PCSZ) "ClientWindow", (PCSZ) "",
                                    WS_VISIBLE,
                                    0L, swpBarraStato.cy,
                                    swpClient.cx, swpClient.cy-swpBarraMenu.cy-swpBarraStato.cy,
@@ -329,7 +329,7 @@ int main( int argc, char *argv[] )
   WinQueryWindowPos(hwndMiaClient,&swpMiaClient);
 
   /* Container Tree *********************************************************/
-  hwndContTree = WinCreateWindow( hwndMiaClient, WC_CONTAINER, "",
+  hwndContTree = WinCreateWindow( hwndMiaClient, WC_CONTAINER, (PCSZ) "",
                                   //WS_VISIBLE | CCS_MINIICONS,
                                   WS_VISIBLE,
                                   BORDER_MIACLIENT,
@@ -342,7 +342,7 @@ int main( int argc, char *argv[] )
   kx=posSepX;
 
   /* Barra separatrice X ****************************************************/
-  hwndBarraSepX = WinCreateWindow( hwndMiaClient, "CSOJ2I0I", "",
+  hwndBarraSepX = WinCreateWindow( hwndMiaClient, (PCSZ) "CSOJ2I0I", (PCSZ) "",
                                   WS_VISIBLE,
                                   kx,
                                   BORDER_MIACLIENT,
@@ -374,7 +374,7 @@ int main( int argc, char *argv[] )
                   SWP_MOVE | SWP_SIZE);
 
   /* Anteprima **************************************************************/
-  hwndPreviewBmp =WinCreateWindow( hwndMiaClient, "CSOJ2I0A", "",
+  hwndPreviewBmp =WinCreateWindow( hwndMiaClient, (PCSZ) "CSOJ2I0A", (PCSZ) "",
                                  //  WS_VISIBLE | WS_CSOJ2I0A_THUMBNAIL,
                                    WS_VISIBLE | WS_CSOJ2I0A_BOTTONI | WS_CSOJ2I0A_THUMBNAIL,
                                    kx,
@@ -384,7 +384,7 @@ int main( int argc, char *argv[] )
                                    hwndMiaClient,
                                    HWND_BOTTOM,
                                    ID_PREVIEW_BMP, NULL, NULL);
-  hwndPreviewTxt =WinCreateWindow( hwndMiaClient, "CSOJ2I0K", "",
+  hwndPreviewTxt =WinCreateWindow( hwndMiaClient, (PCSZ) "CSOJ2I0K", (PCSZ) "",
                                    WS_VISIBLE | DT_VCENTER | DT_LEFT,
                                    kx,
                                    BORDER_MIACLIENT,
@@ -405,7 +405,7 @@ int main( int argc, char *argv[] )
   WinSendMsg(hwndPreviewTxt,WM_CSOJ2I0K_ADD_EXT,MPFROMP("dll" ),MPFROMP("bldlevel"));
 
   /* Barra separatrice Y ****************************************************/
-  hwndBarraSepY = WinCreateWindow( hwndMiaClient, "CSOJ2I0I", "",
+  hwndBarraSepY = WinCreateWindow( hwndMiaClient, (PCSZ) "CSOJ2I0I", (PCSZ) "",
                                   WS_VISIBLE,
                                   kx,
                                   ky,
@@ -418,7 +418,7 @@ int main( int argc, char *argv[] )
   ky=ky+SIZE_BARRA_SEP;
 
   /* Container Files ********************************************************/
-  hwndContFiles = WinCreateWindow( hwndMiaClient, "CSOJ2I0H", "",
+  hwndContFiles = WinCreateWindow( hwndMiaClient, (PCSZ) "CSOJ2I0H", (PCSZ) "",
                                    WS_VISIBLE | CCS_AUTOPOSITION | CCS_EXTENDSEL | CCS_MINIICONS,
                                    kx,
                                    ky,
@@ -440,7 +440,7 @@ int main( int argc, char *argv[] )
   WinSendMsg(hwndFrame,WM_COMMAND,MPFROMSHORT(ID_PREVIEW),MPFROM2SHORT(0,0));
   WinSendMsg(hwndPreviewBmp,WM_COMMAND,MPFROMSHORT(tipoPreviewBmp),0L);
 
-  if (argc==2) VaiADirectory(argv[1],TRUE);
+  if (argc==2) VaiADirectory( (PSZ) argv[1],TRUE);
 
   while( WinGetMsg( hab, &qmsg, (HWND)NULL, 0, 0 ) )
         WinDispatchMsg( hab, &qmsg );
@@ -580,7 +580,7 @@ BOOL SubDir( PSZ pszDir )
    memset(&FindBuffer,0,sizeof(FindBuffer));
    ulResultBufLen = sizeof(FILEFINDBUF3);
    ulFindCount = 1;
-   rc = DosFindFirst( szString,
+   rc = DosFindFirst( (PCSZ) szString,
                       &hdirFindHandle,
                       MUST_HAVE_DIRECTORY | FILE_DIRECTORY | filemask,
                       &FindBuffer,
@@ -645,14 +645,14 @@ VOID InizializzaContainer( )
 
       memset(pfsqBuffer,0,cbBuffer);
       cbBufferOut=cbBuffer;
-      rc=DosQueryFSAttach(szDisk,
+      rc=DosQueryFSAttach((PCSZ) szDisk,
                           0L,
                           FSAIL_QUERYNAME,
                           pfsqBuffer,
                           &cbBufferOut);
       if (rc==0 || rc==ERROR_NOT_READY) {
          memset(&aFSInfo,0,sizeof(aFSInfo));
-         /* Se il drive non Š pronto Š inutile appesantire con inutili letture */
+         /* Se il drive non Å  pronto Å  inutile appesantire con inutili letture */
          if (rc==0) {
             DosQueryFSInfo(ulDriveNumber+1,
                            FSIL_VOLSER,
@@ -704,7 +704,7 @@ VOID InizializzaContainer( )
                         (PVOID)&Data,
                         sizeof(Data),
                         &ulDataLen);
-            /* Se non Š un disco fisso */
+            /* Se non Å  un disco fisso */
             if (Data.bDeviceType!=5) {
                if (ulDriveNumber<3) {
                   /* Floppy */
@@ -734,7 +734,7 @@ VOID InizializzaContainer( )
          if (ulDriveNumber==2)
             WinSendMsg(hwndComboDrive,LM_SELECTITEM,MPFROMSHORT(index),MPFROMLONG(TRUE));
 
-         if (SubDir(pRecDisk[ulDriveNumber]->szFullName))
+         if (SubDir((PSZ) pRecDisk[ulDriveNumber]->szFullName))
             InsertRecDummy( pRecDisk[ulDriveNumber] );
       }
   }
@@ -761,7 +761,7 @@ VOID SetContTree( HWND hwndContainer, ULONG style )
    cnrinfo.pSortRecord            = (PVOID)pfnCompareTree;
    cnrinfo.pFieldInfoLast         = NULL;
    cnrinfo.pFieldInfoObject       = NULL;
-   cnrinfo.pszCnrTitle            = "";
+   cnrinfo.pszCnrTitle            = (PSZ) "";
    cnrinfo.flWindowAttr           = style | CV_TREE | CA_TREELINE | CA_ORDEREDTARGETEMPH | CA_MIXEDTARGETEMPH | CA_OWNERDRAW;
    cnrinfo.ptlOrigin.x            = 0;
    cnrinfo.ptlOrigin.y            = 0;
@@ -802,7 +802,7 @@ VOID SetContFiles( HWND hwndContainer, ULONG style )
    cnrinfo.pSortRecord            = (PVOID)pfnCompareFiles;
    cnrinfo.pFieldInfoLast         = NULL;
    cnrinfo.pFieldInfoObject       = NULL;
-   cnrinfo.pszCnrTitle            = "";
+   cnrinfo.pszCnrTitle            = (PSZ) "";
    cnrinfo.flWindowAttr           = style | CA_ORDEREDTARGETEMPH | CA_MIXEDTARGETEMPH | CA_OWNERDRAW;
    cnrinfo.ptlOrigin.x            = 0;
    cnrinfo.ptlOrigin.y            = 0;
@@ -839,7 +839,7 @@ VOID InsertRecDummy( PUSERRECTREE pRecPadre )
                           MPFROMLONG(cbRecordDataTree), MPFROMSHORT(1));
    memset(pRecDummy,0,cbRecordDataTree);
    pRecDummy->recordCore.cb = sizeof(RECORDCORE);
-   pRecDummy->recordCore.pszTree = "";
+   pRecDummy->recordCore.pszTree = (PSZ) "";
    pRecDummy->recordCore.preccNextRecord=NULLHANDLE;
    recordInsert.cb = sizeof(RECORDINSERT);
    recordInsert.pRecordParent     = (PRECORDCORE)pRecPadre;
@@ -887,7 +887,7 @@ VOID CaricaRamo( PUSERRECTREE pRecPadre )
    memset(&FindBuffer,0,sizeof(FindBuffer));
    ulResultBufLen = sizeof(FILEFINDBUF4);
    ulFindCount = 1;
-   rc = DosFindFirst( szString,
+   rc = DosFindFirst( (PCSZ) szString,
                       &hdirFindHandle,
                       MUST_HAVE_DIRECTORY | FILE_DIRECTORY | filemask,
                       &FindBuffer,
@@ -921,10 +921,10 @@ VOID CaricaRamo( PUSERRECTREE pRecPadre )
           }
           CaseName(pRecFiglio->szTitle);
 
-          pRecFiglio->recordCore.pszTree = pRecFiglio->szTitle;
+          pRecFiglio->recordCore.pszTree = (PSZ) pRecFiglio->szTitle;
           pRecFiglio->recordCore.preccNextRecord=NULLHANDLE;
 
-          pRecFiglio->recordCore.hptrIcon = WinLoadFileIcon(pRecFiglio->szFullName,FALSE);
+          pRecFiglio->recordCore.hptrIcon = WinLoadFileIcon((PCSZ) pRecFiglio->szFullName,FALSE);
 
           recordInsert.cb = sizeof(RECORDINSERT);
           recordInsert.pRecordParent     = (PRECORDCORE)pRecPadre;
@@ -935,7 +935,7 @@ VOID CaricaRamo( PUSERRECTREE pRecPadre )
           WinSendMsg(hwndContTree,
                      CM_INSERTRECORD,
                      (PRECORDCORE)pRecFiglio, &recordInsert);
-          if (SubDir(pRecFiglio->szFullName))
+          if (SubDir( (PSZ) pRecFiglio->szFullName))
              InsertRecDummy( pRecFiglio );
 
       }
@@ -991,7 +991,7 @@ VOID CaricaLista( PSZ pszDir )
    sprintf(szString,"%s\\*.*",pszDir);
 
    ulFindCount = 1;
-   rc = DosFindFirst( szString,
+   rc = DosFindFirst( (PCSZ) szString,
                       &hdirFindHandle,
                       FILE_DIRECTORY | filemask,
                       pFindBuffer,
@@ -1017,13 +1017,13 @@ VOID CaricaLista( PSZ pszDir )
    DosFindClose(hdirFindHandle);
    DosFreeMem(pFindBuffer);
 
-   pchar=strrchr(pszDir,'\\');
+   pchar=strrchr( (const char *) pszDir,'\\');
    if (pchar) pchar++;
-         else pchar=pszDir;
+         else pchar= (CHAR *) pszDir;
    strcpy(name,pchar);
    sprintf(szString,"Contenuto di  \"%s\"  (%s files  %s bytes)",
                     CaseName(name), FormatNum(count,1), FormatNum(size,2));
-   WinSetWindowText(hwndFilesTop,szString);
+   WinSetWindowText(hwndFilesTop, (PCSZ) szString);
 
    SelectContainer( hwndContFiles, SELECT_NONE );
 
@@ -1114,10 +1114,10 @@ VOID InserisciFile( PSZ pszParent, FILEFINDBUF4* pFindBuffer )
 
    pRecFiles->recordCore.cb = sizeof(RECORDCORE);
    pRecFiles->recordCore.flRecordAttr = CRA_DROPONABLE;
-   pRecFiles->recordCore.pszIcon = pRecFiles->szNomeFile;
-   pRecFiles->recordCore.pszText = pRecFiles->szNomeFile;
-   pRecFiles->recordCore.pszName = pRecFiles->szNomeFile;
-   pRecFiles->recordCore.pszTree = pRecFiles->szNomeFile;
+   pRecFiles->recordCore.pszIcon = (PSZ) pRecFiles->szNomeFile;
+   pRecFiles->recordCore.pszText = (PSZ) pRecFiles->szNomeFile;
+   pRecFiles->recordCore.pszName = (PSZ) pRecFiles->szNomeFile;
+   pRecFiles->recordCore.pszTree = (PSZ) pRecFiles->szNomeFile;
    pRecFiles->recordCore.preccNextRecord=NULLHANDLE;
 
    pRecFiles->recordCore.hptrIcon  = pRecFiles->hptr;
@@ -1243,56 +1243,56 @@ VOID ImpostazioniSalva( )
   HINI  hini;
   CSOJ2I0H_POS pos;
 
-  hini=PrfOpenProfile(hab,PRF_HINIFILE);
+  hini=PrfOpenProfile(hab, (PCSZ) PRF_HINIFILE);
 
   // hwndFrame
   WinQueryWindowPos(hwndFrame,&swp);
-  PrfWriteProfileData(hini, PRF_APPL, PRF_FRAME_POS, &swp, sizeof(swp));
+  PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FRAME_POS, &swp, sizeof(swp));
 
   // hwndContTree
   memset(fontNameSize,0,sizeof(fontNameSize));
   if (WinQueryPresParam(hwndContTree, PP_FONTNAMESIZE, 0, &AttrFound, sizeof(fontNameSize), &fontNameSize, QPF_NOINHERIT) > 0)
-     PrfWriteProfileString(hini, PRF_APPL, PRF_TREE_FONT, fontNameSize);
+     PrfWriteProfileString(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TREE_FONT, (PCSZ) fontNameSize);
   if (WinQueryPresParam(hwndContTree, PP_FOREGROUNDCOLOR, 0, &AttrFound, sizeof(ColorValue), &ColorValue, QPF_PURERGBCOLOR | QPF_NOINHERIT) > 0)
-     PrfWriteProfileData(hini, PRF_APPL, PRF_TREE_COLORFORE, &ColorValue, sizeof(ColorValue));
+     PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TREE_COLORFORE, &ColorValue, sizeof(ColorValue));
   if (WinQueryPresParam(hwndContTree, PP_BACKGROUNDCOLOR, 0, &AttrFound, sizeof(ColorValue), &ColorValue, QPF_PURERGBCOLOR | QPF_NOINHERIT) > 0)
-     PrfWriteProfileData(hini, PRF_APPL, PRF_TREE_COLORBACK, &ColorValue, sizeof(ColorValue));
+     PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TREE_COLORBACK, &ColorValue, sizeof(ColorValue));
 
   // hwndContFile
   pos.hini=hini;
-  pos.appl=PRF_APPL;
-  pos.key=PRF_BTN_POS;
+  pos.appl= (PSZ) PRF_APPL;
+  pos.key= (PSZ) PRF_BTN_POS;
   WinSendMsg(hwndContFiles,WM_CSOJ2I0H_STOREPOS,MPFROMP(&pos),0L);
 
   memset(fontNameSize,0,sizeof(fontNameSize));
   if (WinQueryPresParam(hwndContFiles, PP_FONTNAMESIZE, 0, &AttrFound, sizeof(fontNameSize), &fontNameSize, QPF_NOINHERIT) > 0)
-     PrfWriteProfileString(hini, PRF_APPL, PRF_FILE_FONT, fontNameSize);
+     PrfWriteProfileString(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FILE_FONT, (PCSZ) fontNameSize);
   if (WinQueryPresParam(hwndContFiles, PP_FOREGROUNDCOLOR, 0, &AttrFound, sizeof(ColorValue), &ColorValue, QPF_PURERGBCOLOR | QPF_NOINHERIT) > 0)
-     PrfWriteProfileData(hini, PRF_APPL, PRF_FILE_COLORFORE, &ColorValue, sizeof(ColorValue));
+     PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FILE_COLORFORE, &ColorValue, sizeof(ColorValue));
   if (WinQueryPresParam(hwndContFiles, PP_BACKGROUNDCOLOR, 0, &AttrFound, sizeof(ColorValue), &ColorValue, QPF_PURERGBCOLOR | QPF_NOINHERIT) > 0)
-     PrfWriteProfileData(hini, PRF_APPL, PRF_FILE_COLORBACK, &ColorValue, sizeof(ColorValue));
+     PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FILE_COLORBACK, &ColorValue, sizeof(ColorValue));
 
   memset(fontNameSize,0,sizeof(fontNameSize));
   if (WinQueryPresParam(hwndPreviewTxt, PP_FONTNAMESIZE, 0, &AttrFound, sizeof(fontNameSize), &fontNameSize, QPF_NOINHERIT) > 0)
-     PrfWriteProfileString(hini, PRF_APPL, PRF_PREV_FONT, fontNameSize);
+     PrfWriteProfileString(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_PREV_FONT, (PCSZ) fontNameSize);
   if (WinQueryPresParam(hwndPreviewTxt, PP_FOREGROUNDCOLOR, 0, &AttrFound, sizeof(ColorValue), &ColorValue, QPF_PURERGBCOLOR | QPF_NOINHERIT) > 0)
-     PrfWriteProfileData(hini, PRF_APPL, PRF_PREV_COLORFORE, &ColorValue, sizeof(ColorValue));
+     PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_PREV_COLORFORE, &ColorValue, sizeof(ColorValue));
   if (WinQueryPresParam(hwndPreviewTxt, PP_BACKGROUNDCOLOR, 0, &AttrFound, sizeof(ColorValue), &ColorValue, QPF_PURERGBCOLOR | QPF_NOINHERIT) > 0)
-     PrfWriteProfileData(hini, PRF_APPL, PRF_PREV_COLORBACK, &ColorValue, sizeof(ColorValue));
+     PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_PREV_COLORBACK, &ColorValue, sizeof(ColorValue));
 
   // hwndBarraSepX
   WinQueryWindowPos(hwndBarraSepX,&swp);
-  PrfWriteProfileData(hini, PRF_APPL, PRF_POSSEPX, &swp.x, sizeof(swp.x));
+  PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_POSSEPX, &swp.x, sizeof(swp.x));
 
   // hwndBarraSepY
   WinQueryWindowPos(hwndBarraSepY,&swp);
-  PrfWriteProfileData(hini, PRF_APPL, PRF_POSSEPY, &swp.y, sizeof(swp.y));
-  PrfWriteProfileData(hini, PRF_APPL, PRF_FLAGSEPY, &fSepY, sizeof(fSepY));
+  PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_POSSEPY, &swp.y, sizeof(swp.y));
+  PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FLAGSEPY, &fSepY, sizeof(fSepY));
 
   // hwndDefaultView
   idDefaultView=idViewSchiacciato;
-  PrfWriteProfileData(hini, PRF_APPL, PRF_DEF_VIEW, &idDefaultView, sizeof(idDefaultView));
-  PrfWriteProfileData(hini, PRF_APPL, PRF_TIPOPREVIEW, &tipoPreviewBmp, sizeof(tipoPreviewBmp));
+  PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_DEF_VIEW, &idDefaultView, sizeof(idDefaultView));
+  PrfWriteProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TIPOPREVIEW, &tipoPreviewBmp, sizeof(tipoPreviewBmp));
 
   PrfCloseProfile(hini);
   return;
@@ -1303,30 +1303,30 @@ VOID ImpostazioniLeggi( )
   ULONG sizeData=0;
   HINI  hini;
 
-  hini=PrfOpenProfile(hab,PRF_HINIFILE);
+  hini=PrfOpenProfile(hab, (PCSZ) PRF_HINIFILE);
 
   sizeData=sizeof(posSepX);
-  if (!PrfQueryProfileData(hini, PRF_APPL, PRF_POSSEPX, &posSepX, &sizeData ))
+  if (!PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_POSSEPX, &posSepX, &sizeData ))
      posSepX=170;
 
   sizeData=sizeof(posSepY);
-  if (!PrfQueryProfileData(hini, PRF_APPL, PRF_POSSEPY, &posSepY, &sizeData ))
+  if (!PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_POSSEPY, &posSepY, &sizeData ))
      posSepY=150;
 
   sizeData=sizeof(fSepY);
-  if (!PrfQueryProfileData(hini, PRF_APPL, PRF_FLAGSEPY, &fSepY, &sizeData ))
+  if (!PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FLAGSEPY, &fSepY, &sizeData ))
      fSepY=TRUE;
 
   sizeData=sizeof(tipoPreviewBmp);
-  if (!PrfQueryProfileData(hini, PRF_APPL, PRF_TIPOPREVIEW, &tipoPreviewBmp, &sizeData ))
+  if (!PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TIPOPREVIEW, &tipoPreviewBmp, &sizeData ))
      tipoPreviewBmp=WS_CSOJ2I0A_THUMBNAIL;
 
   sizeData=sizeof(filemask);
-  if (!PrfQueryProfileData(hini, PRF_APPL, PRF_FILE_MASK, &filemask, &sizeData ))
+  if (!PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FILE_MASK, &filemask, &sizeData ))
      filemask=FILE_ARCHIVED | FILE_ARCHIVED | FILE_READONLY | FILE_HIDDEN | FILE_SYSTEM;
 
   sizeData=sizeof(idDefaultView);
-  if (!PrfQueryProfileData(hini, PRF_APPL, PRF_DEF_VIEW, &idDefaultView, &sizeData ))
+  if (!PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_DEF_VIEW, &idDefaultView, &sizeData ))
      idDefaultView=ID_DETAIL;
 
   PrfCloseProfile(hini);
@@ -1347,7 +1347,7 @@ VOID ImpostazioniRipristina( )
 
   // hwndFrame
   sizeColorValue=sizeof(swp);
-  fSuccess=PrfQueryProfileData(hini, PRF_APPL, PRF_FRAME_POS, &swp, &sizeColorValue);
+  fSuccess=PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FRAME_POS, &swp, &sizeColorValue);
   if (fSuccess) {
     if (swp.fl & SWP_MAXIMIZE) {
       WinSetWindowPos(hwndFrame, NULLHANDLE, 0L, 0L, 0L, 0L, SWP_MAXIMIZE | SWP_SHOW );
@@ -1364,44 +1364,44 @@ VOID ImpostazioniRipristina( )
 
   // hwndContTree
   memset(fontNameSize,0,sizeof(fontNameSize));
-  if (PrfQueryProfileString(hini, PRF_APPL, PRF_TREE_FONT, NULL, fontNameSize, sizeof(fontNameSize) ))
+  if (PrfQueryProfileString(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TREE_FONT, NULL, fontNameSize, sizeof(fontNameSize) ))
      WinSetPresParam(hwndContTree, PP_FONTNAMESIZE, sizeof(fontNameSize), fontNameSize);
   sizeColorValue=sizeof(ColorValue);
-  if (PrfQueryProfileData(hini, PRF_APPL, PRF_TREE_COLORFORE, &ColorValue, &sizeColorValue ))
+  if (PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TREE_COLORFORE, &ColorValue, &sizeColorValue ))
      WinSetPresParam(hwndContTree, PP_FOREGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
   sizeColorValue=sizeof(ColorValue);
-  if (PrfQueryProfileData(hini, PRF_APPL, PRF_TREE_COLORBACK, &ColorValue, &sizeColorValue ))
+  if (PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_TREE_COLORBACK, &ColorValue, &sizeColorValue ))
      WinSetPresParam(hwndContTree, PP_BACKGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
 
   // hwndContFile
   pos.hini=hini;
-  pos.appl=PRF_APPL;
-  pos.key=PRF_BTN_POS;
+  pos.appl= (PSZ) PRF_APPL;
+  pos.key= (PSZ) PRF_BTN_POS;
   WinSendMsg(hwndContFiles,WM_CSOJ2I0H_RESTOREPOS,MPFROMP(&pos),0L);
 
   memset(fontNameSize,0,sizeof(fontNameSize));
-  if (PrfQueryProfileString(hini, PRF_APPL, PRF_FILE_FONT, NULL, fontNameSize, sizeof(fontNameSize) ))
+  if (PrfQueryProfileString(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FILE_FONT, NULL, fontNameSize, sizeof(fontNameSize) ))
      WinSetPresParam(hwndContFiles, PP_FONTNAMESIZE, sizeof(fontNameSize), fontNameSize);
   sizeColorValue=sizeof(ColorValue);
-  if (PrfQueryProfileData(hini, PRF_APPL, PRF_FILE_COLORFORE, &ColorValue, &sizeColorValue ))
+  if (PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FILE_COLORFORE, &ColorValue, &sizeColorValue ))
      WinSetPresParam(hwndContFiles, PP_FOREGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
   sizeColorValue=sizeof(ColorValue);
-  if (PrfQueryProfileData(hini, PRF_APPL, PRF_FILE_COLORBACK, &ColorValue, &sizeColorValue ))
+  if (PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_FILE_COLORBACK, &ColorValue, &sizeColorValue ))
      WinSetPresParam(hwndContFiles, PP_BACKGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
 
   // hwndPreviewBmp
   memset(fontNameSize,0,sizeof(fontNameSize));
-  if (PrfQueryProfileString(hini, PRF_APPL, PRF_PREV_FONT, NULL, fontNameSize, sizeof(fontNameSize) )) {
+  if (PrfQueryProfileString(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_PREV_FONT, NULL, fontNameSize, sizeof(fontNameSize) )) {
      WinSetPresParam(hwndPreviewBmp, PP_FONTNAMESIZE, sizeof(fontNameSize), fontNameSize);
      WinSetPresParam(hwndPreviewTxt, PP_FONTNAMESIZE, sizeof(fontNameSize), fontNameSize);
   }
   sizeColorValue=sizeof(ColorValue);
-  if (PrfQueryProfileData(hini, PRF_APPL, PRF_PREV_COLORFORE, &ColorValue, &sizeColorValue )) {
+  if (PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_PREV_COLORFORE, &ColorValue, &sizeColorValue )) {
      WinSetPresParam(hwndPreviewBmp, PP_FOREGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
      WinSetPresParam(hwndPreviewTxt, PP_FOREGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
   }
   sizeColorValue=sizeof(ColorValue);
-  if (PrfQueryProfileData(hini, PRF_APPL, PRF_PREV_COLORBACK, &ColorValue, &sizeColorValue )) {
+  if (PrfQueryProfileData(hini, (PCSZ) PRF_APPL, (PCSZ) PRF_PREV_COLORBACK, &ColorValue, &sizeColorValue )) {
      WinSetPresParam(hwndPreviewBmp, PP_BACKGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
      WinSetPresParam(hwndPreviewTxt, PP_BACKGROUNDCOLOR, sizeof(ColorValue), &ColorValue);
   }
@@ -1459,8 +1459,8 @@ PUSERRECTREE SearchDirectory( PSZ baseDir, PUSERRECTREE pRecPadre )
                                    MPFROMP(pRecPadre),
                                    MPFROM2SHORT( CMA_FIRSTCHILD , CMA_ITEMORDER ));
    while (pChild) {
-      if (stricmp(baseDir,pChild->szFullName)==0) return(pChild);
-      if ((strnicmp(baseDir,pChild->szFullName,strlen(pChild->szFullName))==0) &&
+      if (stricmp( (const char *) baseDir,pChild->szFullName)==0) return(pChild);
+      if ((strnicmp( (const char *) baseDir,pChild->szFullName,strlen(pChild->szFullName))==0) &&
           (*(baseDir+strlen(pChild->szFullName))=='\\') ) {
          return(SearchDirectory(baseDir,pChild));
       }
@@ -1511,7 +1511,7 @@ MRESULT EXPENTRY BarraMenuProc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2)
                   index=(SHORT)WinSendMsg(hwndComboDrive,LM_QUERYSELECTION,MPFROMSHORT(LIT_FIRST),0L);
                   memset(szString,0,sizeof(szString));
                   sprintf(szString,"%c:",pComboTab[index]);
-                  VaiADirectory(szString,TRUE);
+                  VaiADirectory( (PSZ) szString,TRUE);
                }
             break;
          }
@@ -1538,7 +1538,7 @@ MRESULT EXPENTRY BarraMenuProc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2)
             rc.xRight=1;
             rc.yBottom=0;
             rc.yTop=1;
-            WinDrawText(hpsTest,-1L, pChar, &rc, 0L,0L, DT_LEFT | DT_TOP | DT_QUERYEXTENT );
+            WinDrawText(hpsTest,-1L, (PCCH) pChar, &rc, 0L,0L, DT_LEFT | DT_TOP | DT_QUERYEXTENT );
             WinReleasePS(hpsTest);
             free(pChar);
 
@@ -2820,7 +2820,7 @@ VOID InfoDisk( PSZ szDir )
   memset(&aFSAlloc,0,sizeof(aFSAlloc));
   rc=DosQueryFSInfo(ulDriveNumber+1, FSIL_ALLOC, (PVOID)&aFSAlloc, sizeof(aFSAlloc));
   memset(&aFSInfo,0,sizeof(aFSInfo));
-  // Se il drive non Š pronto Š inutile appesantire con inutili letture
+  // Se il drive non Å  pronto Å  inutile appesantire con inutili letture
   if (rc==0) {
     DosQueryFSInfo(ulDriveNumber+1, FSIL_VOLSER, (PVOID)&aFSInfo, sizeof(aFSInfo));
   }
@@ -2832,7 +2832,7 @@ VOID InfoDisk( PSZ szDir )
 
   memset(szString,0,sizeof(szString));
 
-  sprintf(szString,"Unit…  \"%c:\"  %.0f Mb  (%.0f liberi)",
+  sprintf(szString,"Unitâ€¦  \"%c:\"  %.0f Mb  (%.0f liberi)",
           newdisk,
           (double)((aFSAlloc.cUnit * aFSAlloc.cSectorUnit * aFSAlloc.cbSector)/1048576),
           (double)((aFSAlloc.cUnitAvail * aFSAlloc.cSectorUnit * aFSAlloc.cbSector)/1048576));
@@ -3088,4 +3088,3 @@ VOID GestBarraStato( BOOL opt )
    WinSendMsg( hwndFrame, WM_SIZE, 0L, 0L);
    return;
 }
-

@@ -590,4 +590,3 @@ VOID DrawButton( PUSERBUTTON pBtn )
    ptl.x = rcWin.xLeft+1;
    GpiLine(pBtn->hps, &ptl);
 }
-

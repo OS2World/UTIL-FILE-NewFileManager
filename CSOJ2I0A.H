@@ -62,5 +62,3 @@ typedef struct {
   ULONG   y2Trg;   //        left
 } CSOJ2I0A_PRINT_PARAMETERS;
 typedef CSOJ2I0A_PRINT_PARAMETERS *PCSOJ2I0A_PRINT_PARAMETERS;
-
-

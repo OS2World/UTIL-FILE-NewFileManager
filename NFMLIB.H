@@ -28,4 +28,3 @@ BOOL EXPENTRY SetColor( HAB, HWND, ULONG );
 #define ID_FILE_S                   303
 #define ID_FILE_R                   304
 #define ID_DEFAULT                  305
-

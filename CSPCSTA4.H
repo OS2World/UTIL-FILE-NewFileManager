@@ -25,4 +25,3 @@ BOOL CSPCSTA4( HAB, HWND, PSZ, PSZ, PSZ );
 #define ID_CSPCSTA4_BMP_GRAFICO1             201
 #define ID_CSPCSTA4_BMP_GRAFICO2             202
 #define ID_CSPCSTA4_BMP_GRAFICO3             203
-

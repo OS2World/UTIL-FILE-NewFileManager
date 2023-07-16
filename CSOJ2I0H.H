@@ -37,4 +37,3 @@ typedef struct {
 #define ID_BMP_UP       101
 #define ID_BMP_RELOAD   102
 #define ID_BMP_RELOAD_R 103
-

@@ -1072,4 +1072,3 @@ VOID DrawLinee( HPS hps, ULONG color, POINTL origine, ULONG cx, ULONG cy, ULONG 
   GpiLine(hps,&ptl);
   return;
 }
-

@@ -153,7 +153,7 @@ typedef struct _PRIVATESTRUCT
      ULONG    tipo_BBO;      /* Opzione per BitBlt */
 
      BOOL     bottoni;       /* TRUE=SI FALSE=NO Se compaiono i bottoncini sotto */
-     BOOL     modificabile;  /* TRUE=SI FALSE=NO Se l'utente pu• modificare l'immagine */
+     BOOL     modificabile;  /* TRUE=SI FALSE=NO Se l'utente puâ€¢ modificare l'immagine */
      HPAL     hPal;
 
      HWND     hwndParent;
@@ -230,7 +230,7 @@ BOOL CSOJ2I0A_REGISTRA( HAB lochab )
 
    hab=lochab;
 
-   /* Se classe gi… registrata */
+   /* Se classe giâ€¦ registrata */
    if( WinQueryClassInfo( hab,
                           (PSZ)"CSOJ2I0A",
                           &clsiTmp )==TRUE ) {
@@ -242,14 +242,14 @@ BOOL CSOJ2I0A_REGISTRA( HAB lochab )
                            (PFNWP)CSOJ2I0A_Proc,
                            0L,
                            4L ) ) {
-      WinMessageBox(HWND_DESKTOP,HWND_DESKTOP,"Not register class CSOJ2I0A","CSOJ2I0A",0L,0L);
+      WinMessageBox(HWND_DESKTOP,HWND_DESKTOP, (PCSZ) "Not register class CSOJ2I0A", (PCSZ) "CSOJ2I0A",0L,0L);
       return( FALSE );
    }
 
-   WinRegisterClass(hab,"clIndicatore",Indicatore_Proc, 0L, 4L);
-   WinRegisterClass(hab,"clBmp",Bmp_Proc, 0L, 4L);
+   WinRegisterClass(hab,(PCSZ) "clIndicatore",Indicatore_Proc, 0L, 4L);
+   WinRegisterClass(hab,(PCSZ) "clBmp",Bmp_Proc, 0L, 4L);
 
-   DosQueryModuleHandle("CSOJ2I0A", &hmod);
+   DosQueryModuleHandle( (PCSZ) "CSOJ2I0A", &hmod);
 
    hPtrA = WinLoadPointer(HWND_DESKTOP,hmod,4451);
    hPtrC = WinLoadPointer(HWND_DESKTOP,hmod,4452);
@@ -327,39 +327,39 @@ MRESULT EXPENTRY CSOJ2I0A_Proc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2 )
            CalcolaPosizioni(hwnd,&ps);
 
            pPrivateStruct->hwndBmp =
-                 WinCreateWindow( hwnd, "clBmp", "",
+                 WinCreateWindow( hwnd, (PCSZ) "clBmp", (PCSZ) "",
                                   WS_SYNCPAINT | WS_VISIBLE,
                                   ps.xBmp, ps.yBmp, ps.cxBmp, ps.cyBmp,
                                   hwnd, HWND_TOP, ID_CSOJ2I0A_BITMAP, NULL, NULL);
            WinSetWindowPtr(pPrivateStruct->hwndBmp, 0, pPrivateStruct);
 
            pPrivateStruct->hwndIndic =
-                 WinCreateWindow( hwnd, "clIndicatore", "",
+                 WinCreateWindow( hwnd, (PCSZ) "clIndicatore", (PCSZ) "",
                                   WS_SYNCPAINT | WS_VISIBLE,
                                   ps.xIndic, ps.yIndic, ps.cxIndic, ps.cyIndic,
                                   hwnd, HWND_TOP, ID_CSOJ2I0A_INDIC, NULL, NULL);
            WinSetWindowPtr(pPrivateStruct->hwndIndic, 0, pPrivateStruct);
 
            pPrivateStruct->hwndBtnOriginale =
-                 WinCreateWindow( hwnd, WC_BUTTON, "#4401",
+                 WinCreateWindow( hwnd, WC_BUTTON, (PCSZ) "#4401",
                                   WS_SYNCPAINT | WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | BS_PUSHBUTTON | WS_GROUP,
                                   ps.xBtn1, ps.yBtn1, ps.cxBtn1, ps.cyBtn1,
                                   hwnd, HWND_TOP, ID_CSOJ2I0A_BTN_ORIGINALE, NULL, NULL);
 
            pPrivateStruct->hwndBtnThumbnail =
-                 WinCreateWindow( hwnd, WC_BUTTON, "#4402",
+                 WinCreateWindow( hwnd, WC_BUTTON, (PCSZ) "#4402",
                                   WS_SYNCPAINT | WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | BS_PUSHBUTTON | WS_GROUP,
                                   ps.xBtn2, ps.yBtn2, ps.cxBtn2, ps.cyBtn2,
                                   hwnd, HWND_TOP, ID_CSOJ2I0A_BTN_THUMBNAIL, NULL, NULL);
 
            pPrivateStruct->hwndBtnStretch =
-                 WinCreateWindow( hwnd, WC_BUTTON, "#4403",
+                 WinCreateWindow( hwnd, WC_BUTTON, (PCSZ) "#4403",
                                   WS_SYNCPAINT | WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | BS_PUSHBUTTON | WS_GROUP,
                                   ps.xBtn3, ps.yBtn3, ps.cxBtn3, ps.cyBtn3,
                                   hwnd, HWND_TOP, ID_CSOJ2I0A_BTN_STRETCH, NULL, NULL);
 
            pPrivateStruct->hwndSpin =
-                 WinCreateWindow( hwnd, WC_SPINBUTTON, "",
+                 WinCreateWindow( hwnd, WC_SPINBUTTON, (PCSZ) "",
                                   WS_SYNCPAINT | WS_VISIBLE | SPBS_MASTER | SPBS_JUSTCENTER | SPBS_NUMERICONLY,
                                   ps.xSpin, ps.ySpin, ps.cxSpin, ps.cySpin,
                                   hwnd, HWND_TOP, ID_CSOJ2I0A_SPIN, NULL, NULL);
@@ -367,14 +367,14 @@ MRESULT EXPENTRY CSOJ2I0A_Proc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2 )
            WinSendMsg( pPrivateStruct->hwndSpin, SPBM_SETCURRENTVALUE, MPFROMLONG(100), 0L );
 
            pPrivateStruct->hwndTesto =
-                 WinCreateWindow( hwnd, WC_STATIC, "Titolo della foto",
+                 WinCreateWindow( hwnd, WC_STATIC, (PCSZ) "Photo tittle",
                                   WS_SYNCPAINT | WS_VISIBLE | SS_TEXT | DT_VCENTER | DT_LEFT,
                                   ps.xText, ps.yText, ps.cxText, ps.cyText,
                                   hwnd, HWND_TOP, ID_CSOJ2I0A_TESTO, NULL, NULL);
 
            if (pPrivateStruct->modificabile) {
               pPrivateStruct->hwndBtnFolder =
-                    WinCreateWindow( hwnd, WC_BUTTON, "#4407",
+                    WinCreateWindow( hwnd, WC_BUTTON, (PCSZ) "#4407",
                                      WS_SYNCPAINT | WS_VISIBLE | BS_NOPOINTERFOCUS | BS_USERBUTTON | BS_PUSHBUTTON | WS_GROUP,
                                      ps.xFolder, ps.yFolder, ps.cxFolder, ps.cyFolder,
                                      hwnd, HWND_TOP, ID_CSOJ2I0A_BTN_FOLDER, NULL, NULL);
@@ -513,30 +513,30 @@ MRESULT EXPENTRY CSOJ2I0A_Proc( HWND hwnd, ULONG msg, MPARAM mp1, MPARAM mp2 )
                    if( pszPathName == NULL ) break;
 
                    memset(pszPathName,0,MAX_FILENAME_SIZE);
-                   if (PrfQueryProfileString( HINI_PROFILE, INI_APPL, INI_KEY, NULL,
+                   if (PrfQueryProfileString( HINI_PROFILE, (PCSZ) INI_APPL, (PCSZ) INI_KEY, NULL,
                                           pszPathName, MAX_FILENAME_SIZE ))
-                      strcat(pszPathName,"\\*.*");
+                      strcat((char * restrict) pszPathName,"\\*.*");
                    else
-                      strcat(pszPathName,"*.*");
+                      strcat((char * restrict) pszPathName,"*.*");
 
                    if ( OpenFileDialog ( hwndDlg,
-                                         "Selezionare un'immagine",
+                                         (PSZ) "Select an image",
                                          pszPathName,
-                                         "Aprire",
+                                         (PSZ) "Open",
                                          pszFileName ) == TRUE ) {
 
                       memset(pszPathName,0,MAX_FILENAME_SIZE);
-                      strcpy(pszPathName,pszFileName);
-                      pChar=strrchr(pszPathName,'\\');
+                      strcpy( (char * restrict) pszPathName, (const char * restrict) pszFileName);
+                      pChar=strrchr( (const char *) pszPathName,'\\');
                       if (pChar) *pChar=0;
-                      PrfWriteProfileString( HINI_PROFILE, INI_APPL, INI_KEY, pszPathName);
+                      PrfWriteProfileString( HINI_PROFILE, (PCSZ) INI_APPL, (PCSZ) INI_KEY, pszPathName);
 
                       if (GetBitmap( hwnd, pszFileName )!=NULLHANDLE) {
                          WinSendMsg( hwndDlg, WM_CONTROL,
                                      MPFROM2SHORT(idCSOJ2I0A,WN_CSOJ2I0A_MODIFIED),
                                      MPFROMP(pszFileName));
                       } else {
-                         strcpy(pszFileName,pPrivateStruct->szFileName);
+                         strcpy( (char * restrict) pszFileName,pPrivateStruct->szFileName);
                          GetBitmap( hwnd, pszFileName );
                       }
                    }
@@ -695,7 +695,7 @@ HBITMAP LoadBitmap ( HAB hab,
      */
 
     if ( ulReturnCode == MMIO_ERROR ) {
-        WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+        WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) "Image not available");
         return (0L);
     }
 
@@ -706,7 +706,7 @@ HBITMAP LoadBitmap ( HAB hab,
      */
 
     if( mmFormatInfo.fccIOProc == FOURCC_DOS ) {
-        WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+        WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) "Image not available");
         return ( 0L );
     }
 
@@ -717,7 +717,7 @@ HBITMAP LoadBitmap ( HAB hab,
 
     if ( (mmFormatInfo.ulMediaType != MMIO_MEDIATYPE_IMAGE) ||
          ((mmFormatInfo.ulFlags & MMIO_CANREADTRANSLATED) == 0) ) {
-        WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+        WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) "Image not available");
         return ( 0L );
     } else {
         fccIOProc = mmFormatInfo.fccIOProc;
@@ -736,7 +736,7 @@ HBITMAP LoadBitmap ( HAB hab,
 
     if ( ! hmmio ) {
         // If file could not be opened, return with error
-        WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+        WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) "Image not available");
         return (0L);
     }
 
@@ -750,7 +750,7 @@ HBITMAP LoadBitmap ( HAB hab,
     if ( ulImageHeaderLength != sizeof ( MMIMAGEHEADER ) ) {
         /* We have a problem.....possibly incompatible versions */
        mmioClose (hmmio, 0L);
-       WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+       WinSetWindowText(pPrivateStruct->hwndTesto,(PCSZ) "Image not available");
        return (0L);
     }
 
@@ -766,7 +766,7 @@ HBITMAP LoadBitmap ( HAB hab,
     if ( ulReturnCode != MMIO_SUCCESS ) {
        /* Header unavailable */
        mmioClose (hmmio, 0L);
-       WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+       WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) "Image not available");
        return (0L);
     }
 
@@ -806,7 +806,7 @@ HBITMAP LoadBitmap ( HAB hab,
     /* Allocate space for ONE row of pels */
     if ( DosAllocMem( (PPVOID)&pRowBuffer, (ULONG)dwNumRowBytes, fALLOC)) {
        mmioClose (hmmio, 0L);
-       WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+       WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) "Image not available");
        return(0L);
     }
 
@@ -827,7 +827,7 @@ HBITMAP LoadBitmap ( HAB hab,
 
     if ( !*hps ) {
         mmioClose (hmmio, 0L);
-        WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+        WinSetWindowText(pPrivateStruct->hwndTesto,(PCSZ) "Image not available");
         return(0L);
     }
 
@@ -845,7 +845,7 @@ HBITMAP LoadBitmap ( HAB hab,
 
     if ( !hbm ) {
         mmioClose (hmmio, 0L);
-        WinSetWindowText(pPrivateStruct->hwndTesto,"Immagine non disponibile");
+        WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) "Image not available");
         return(0L);
     }
     WinSendMsg( pPrivateStruct->hwndIndic, WM_CSOJ2I0A_SETINDIC, MPFROMLONG(48), MPFROMLONG(100) );
@@ -862,7 +862,7 @@ HBITMAP LoadBitmap ( HAB hab,
     for (numColors=0;numColors<MAX_COLORSFORBITBLT;numColors++)
        tab[numColors]=NON_ASSEGNATO;
 
-    // Conto i colori se l'informazione non Š disponibile e
+    // Conto i colori se l'informazione non Å  disponibile e
     // se i colori fisici sono maggiori di quelli richiesti
     if ((mmImgHdr.mmXDIBHeader.BMPInfoHeader2.cclrUsed!=0) ||
         (pow(2,wBitCount) < MAX_COLORSFORBITBLT) ) {
@@ -875,7 +875,7 @@ HBITMAP LoadBitmap ( HAB hab,
 
     for ( dwRowCount = 0; dwRowCount < dwHeight; dwRowCount++ ) {
          ulBytesRead = (ULONG) mmioRead ( hmmio,
-                                          pRowBuffer,
+                                          (PCHAR) pRowBuffer,
                                           dwNumRowBytes );
 
          if ( !ulBytesRead ) break;
@@ -903,7 +903,7 @@ HBITMAP LoadBitmap ( HAB hab,
     }
 
     memset(szString,0,sizeof(szString));
-    sprintf(szString,"[%dx%dx%d] ",
+    sprintf(szString,"[%ldx%ldx%d] ",
             mmImgHdr.mmXDIBHeader.BMPInfoHeader2.cx,
             mmImgHdr.mmXDIBHeader.BMPInfoHeader2.cy,
             //numColors
@@ -913,10 +913,10 @@ HBITMAP LoadBitmap ( HAB hab,
             );
 
     memset(szPath,0,sizeof(szPath));
-    strcpy(szPath,pszFileName);
+    strcpy(szPath, (const char * restrict) pszFileName);
     pChar=strrchr(szPath,'\\');
     if (pChar) strcat(szString,CaseName(pChar+1));
-    WinSetWindowText(pPrivateStruct->hwndTesto,szString);
+    WinSetWindowText(pPrivateStruct->hwndTesto, (PCSZ) szString);
 
     if (numColors < MAX_COLORSFORBITBLT) {
       if (wBitCount==1) {
@@ -930,7 +930,7 @@ HBITMAP LoadBitmap ( HAB hab,
 
     pPrivateStruct->tipo_ROP=ROP_SRCCOPY;
 
-    /* Bitmap OS2 o WinRGB 1bpp me li d… al contrario BOH ??? */
+    /* Bitmap OS2 o WinRGB 1bpp me li dâ€¦ al contrario BOH ??? */
     if ( (wBitCount==1) &&
          (strncmp(mmFormatInfo.szDefaultFormatExt,"BMP",sizeof("BMP"))==0) ) {
        pPrivateStruct->tipo_ROP=ROP_NOTSRCCOPY;
@@ -966,7 +966,7 @@ HBITMAP GetBitmap ( HWND hwndClass, PSZ  pszFileName)
     if ( !pPrivateStruct->hdcMemory ) {
          pPrivateStruct->hdcMemory = DevOpenDC ( hab,
                                                  OD_MEMORY,
-                                                 "*",
+                                                 (PCSZ) "*",
                                                  0L,
                                                  NULL,
                                                  0);
@@ -1007,7 +1007,7 @@ HBITMAP GetBitmap ( HWND hwndClass, PSZ  pszFileName)
 
     GpiQueryPS ( pPrivateStruct->hpsMemory, &pPrivateStruct->ImageSize);
     memset(pPrivateStruct->szFileName,0,MAX_FILENAME_SIZE);
-    strcpy(pPrivateStruct->szFileName,pszFileName);
+    strcpy(pPrivateStruct->szFileName, (const char * restrict)  pszFileName);
 
     /*
      *  Be sure that the image gets repainted
@@ -1906,4 +1906,3 @@ VOID ChangePresParam( PPRIVATESTRUCT pPrivateStruct, HWND hwnd, ULONG pptype )
 
    fRecurse=FALSE;
 }
-

@@ -262,4 +262,3 @@ VOID EXPENTRY TrackRect( PAREA_CLASSE pArea, MPARAM mp1 )
    }
    return;
 }
-

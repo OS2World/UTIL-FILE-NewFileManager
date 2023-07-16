@@ -5,4 +5,3 @@ STACKSIZE    65535
 HEAPSIZE     65535
 EXPORTS      CSOJ2I0A_REGISTRA @1
              OpenFileDialog    @2
-

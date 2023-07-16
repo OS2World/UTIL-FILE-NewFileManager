@@ -543,4 +543,3 @@ BOOL CSOJ2I0K_CheckPgm( PSZ pgmname )
   if (flag & FAPPTYP_WINDOWCOMPAT) return( TRUE );
   return( FALSE );
 }
-

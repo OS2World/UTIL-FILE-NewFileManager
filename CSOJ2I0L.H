@@ -18,4 +18,3 @@ BOOL EXPENTRY CSOJ2I0L_REGISTRA( HAB );
 #define ID_CSOJ2I0L_TEXT          101
 #define ID_CSOJ2I0L_BTN           102
 #define ID_CSOJ2I0L_LIST          103
-

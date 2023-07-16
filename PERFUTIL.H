@@ -57,4 +57,3 @@ APIRET APIENTRY DosPerfSysCall(ULONG ulCommand, ULONG ulParm1, ULONG ulParm2, UL
 #ifdef __cplusplus
   }
 #endif
-

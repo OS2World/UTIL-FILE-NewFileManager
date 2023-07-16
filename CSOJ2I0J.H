@@ -30,5 +30,3 @@ typedef CSOJ2I0J_INSERTITEM *PCSOJ2I0J_INSERTITEM;
 /* ID Esportati **************************************************************/
 #define ID_CSOJ2I0J_VSB          101
 #define ID_CSOJ2I0J_AREA         102
-
-

@@ -203,4 +203,3 @@ void DrawPercentuale( HWND hwnd )
 
    WinEndPaint( hps );
 }
-

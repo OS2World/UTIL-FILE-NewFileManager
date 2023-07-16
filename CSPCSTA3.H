@@ -44,5 +44,3 @@ typedef CSPCSTA3_INSERTITEM *PCSPCSTA3_INSERTITEM;
 // mp2=(ULONG)id selezionato
 
 /* ID Esportati **************************************************************/
-
-

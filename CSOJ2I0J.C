@@ -621,4 +621,3 @@ VOID ImpostaDimensioni( PPRIVATESTRUCTCTRL pCtrl )
   WinSendMsg( pCtrl->hwndSB, SBM_SETSCROLLBAR,
               MPFROMSHORT(position), MPFROM2SHORT(1,(USHORT)iArea+1));
 }
-

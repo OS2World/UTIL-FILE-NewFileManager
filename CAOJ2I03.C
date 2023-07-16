@@ -183,4 +183,3 @@ void DrawEmbossed( HWND hwnd )
 
    return;
 }
-

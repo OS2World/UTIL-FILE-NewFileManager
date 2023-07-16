@@ -13,4 +13,3 @@ BOOL EXPENTRY CAOJ2I04_REGISTRA( HAB );
 #define WM_SETPERC        WM_USER + 1   /* Setta la percentuale               */
                                         /* mp1(ULONG)=dividendo;              */
                                         /* mp2(ULONG)=divisore, se omesso 100 */
-

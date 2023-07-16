@@ -12,5 +12,3 @@ BOOL    EXPENTRY CSOJ2I0I_REGISTRA   ( HAB lochab );
 //    mp2=LONG delta
 
 /* ID Esportati **************************************************************/
-
-

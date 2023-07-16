@@ -33,5 +33,3 @@ typedef CSOJ2I0K_PRESPARAM *PCSOJ2I0K_PRESPARAM;
 /*****************************************************************************/
 #define ID_CSOJ2I0K_TEXT          101
 #define ID_CSOJ2I0K_INDIC         102
-
-

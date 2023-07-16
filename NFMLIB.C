@@ -49,7 +49,7 @@ CWPARAM  cwparam;
 BOOL EXPENTRY NFMSETT( PCOMMAREA pcm )
 {
   memcpy(&cm,pcm,sizeof(COMMAREA));
-  DosQueryModuleHandle("NFMLIB", &hmod);
+  DosQueryModuleHandle( (PCSZ) "NFMLIB", &hmod);
   WinDlgBox( HWND_DESKTOP, cm.hwndParent,
              (PFNWP)SettingsProc,
              (HMODULE)hmod,
@@ -63,7 +63,7 @@ MRESULT EXPENTRY SettingsProc( HWND hwnd, ULONG  msg, MPARAM mp1, MPARAM mp2 )
   switch( msg )
   {
     case WM_INITDLG:
-       hlib = WinLoadLibrary (cm.hab, "WPCONFIG.DLL");
+       hlib = WinLoadLibrary (cm.hab, (PCSZ) "WPCONFIG.DLL");
        InitializeNoteBook(hwnd);
     break;
 
@@ -202,7 +202,7 @@ MRESULT EXPENTRY ColorProc( HWND hwnd, ULONG  msg, MPARAM mp1, MPARAM mp2 )
 BOOL EXPENTRY SetColor( HAB hab, HWND hwndCntrl, ULONG ppColor )
 {
    HWND hwndColor;
-   hlib = WinLoadLibrary (cm.hab, "WPCONFIG.DLL");
+   hlib = WinLoadLibrary (cm.hab, (PCSZ) "WPCONFIG.DLL");
    cwparam.cb = sizeof(CWPARAM);
    cwparam.rgb.bRed   = 63;
    cwparam.rgb.bGreen = 127;
@@ -216,4 +216,3 @@ BOOL EXPENTRY SetColor( HAB hab, HWND hwndCntrl, ULONG ppColor )
    WinDeleteLibrary(cm.hab, hlib);
    return( TRUE );
 }
-

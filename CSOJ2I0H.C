@@ -1264,4 +1264,3 @@ VOID EXPENTRY CalcolaSizeItem( PPRIVATESTRUCT pClass, POWNERITEM pOwnerItem, PRE
      }
   }
 }
-
