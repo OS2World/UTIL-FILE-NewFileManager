@@ -9,7 +9,7 @@ LICENSE
 
 COMPILE TOOLS
 ===============
-* yum install git gcc make libc-devel binutils watcom-wrc watcom-wlink-hll watcom-wipfc os2tk45-headers
+* yum install git gcc make libc-devel binutils watcom-wrc watcom-wlink-hll watcom-wipfc os2tk45-headers os2tk45-libs
 
 AUTHORS
 ===============
